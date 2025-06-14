@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ferrous Aircraft Materials Quiz</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+    h1 { text-align: center; }
+    .question { margin-bottom: 20px; }
+    .question h3 { margin-bottom: 10px; }
+    .question label { display: block; }
+    #submitBtn { margin-top: 20px; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <h1>Ferrous Aircraft Materials Quiz</h1>
+  <form id="quizForm">
+    <!-- Questions will be inserted here -->
+  </form>
+  <div id="result" class="hidden"></div>
+
+  <script>
+    const questions = [
+      { q: "What is the primary raw material used to produce pig iron?", options: ["Bauxite", "Limestone", "Iron Ore", "Copper"], answer: 2 },
+      { q: "In a blast furnace, what combines with impurities to form slag?", options: ["Sand", "Lime", "Argon", "Carbon"], answer: 1 },
+      { q: "What gas reduces iron oxide to molten iron in a blast furnace?", options: ["Oxygen", "Nitrogen", "Carbon dioxide", "Carbon monoxide"], answer: 3 },
+      { q: "Which process uses a water-cooled lance to inject oxygen into molten metal?", options: ["Electric Arc Furnace", "Bessemer Process", "Basic Oxygen Process", "Carburising"], answer: 2 },
+      { q: "Which steelmaking process is preferred for alloy steels and recycling scrap?", options: ["Basic Oxygen Process", "Open Hearth Process", "Electric Arc Furnace", "Blast Furnace"], answer: 2 },
+      { q: "What is the carbon content range for high-carbon steel?", options: ["0.01–0.25%", "0.25–0.7%", "0.7–1.5%", "Above 1.7%"], answer: 2 },
+      { q: "Which element improves steel strength by reducing sulphur content?", options: ["Nickel", "Manganese", "Chromium", "Zinc"], answer: 1 },
+      { q: "At what carbon content is steel composed entirely of pearlite?", options: ["0.25%", "0.7%", "0.83%", "1.5%"], answer: 2 },
+      { q: "Which heat treatment softens steel for machining?", options: ["Tempering", "Hardening", "Normalising", "Annealing"], answer: 3 },
+      { q: "Tempering is typically done after which process?", options: ["Normalising", "Hardening", "Annealing", "Welding"], answer: 1 },
+      { q: "Which element makes steel corrosion-resistant by forming an oxide layer?", options: ["Vanadium", "Chromium", "Cobalt", "Nickel"], answer: 1 },
+      { q: "Invar steel is known for its very low:", options: ["Density", "Cost", "Coefficient of expansion", "Magnetic permeability"], answer: 2 },
+      { q: "Which element in small amounts improves toughness and grain refinement?", options: ["Sulphur", "Phosphorus", "Vanadium", "Lead"], answer: 2 },
+      { q: "Why is oil used instead of water for quenching alloy steels?", options: ["To cool faster", "To increase ductility", "To prevent distortion", "To reduce carbon content"], answer: 2 },
+      { q: "Normalising helps restore:", options: ["Surface hardness", "Corrosion resistance", "Crystalline structure", "Magnetic properties"], answer: 2 },
+      { q: "Which method introduces carbon into the surface by gas?", options: ["Nitriding", "Gas carburising", "Flame hardening", "Tempering"], answer: 1 },
+      { q: "What is the main advantage of nitriding over carburising?", options: ["Requires no heat", "Adds chromium", "No need for quenching", "Adds carbon faster"], answer: 2 },
+      { q: "Which method uses electromagnetic induction to harden steel surfaces?", options: ["Flame hardening", "Cyanide hardening", "Induction hardening", "Case carburising"], answer: 2 },
+      { q: "In SAE steel number 1045, what does '45' indicate?", options: ["0.45% carbon", "4.5% chromium", "Series number", "Melting point"], answer: 0 },
+      { q: "Which document defines the correct method to remove corrosion on an aircraft?", options: ["METAR", "Logbook", "SRM", "Bill of Materials"], answer: 2 },
+    ];
+
+    const form = document.getElementById("quizForm");
+    const result = document.getElementById("result");
+
+    questions.forEach((q, i) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<h3>Q${i + 1}. ${q.q}</h3>` +
+        q.options.map((opt, j) => `<label><input type="radio" name="q${i}" value="${j}" required> ${opt}</label>`).join("");
+      form.appendChild(div);
+    });
+
+    const submitBtn = document.createElement("button");
+    submitBtn.type = "submit";
+    submitBtn.id = "submitBtn";
+    submitBtn.textContent = "Submit Quiz";
+    form.appendChild(submitBtn);
+
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      let score = 0;
+      questions.forEach((q, i) => {
+        const userAnswer = form[`q${i}`].value;
+        if (parseInt(userAnswer) === q.answer) score++;
+      });
+      form.classList.add("hidden");
+      result.classList.remove("hidden");
+      result.innerHTML = `<h2>Your score: ${score} / ${questions.length}</h2>`;
+    });
+
+    // Cheat detection (tab switch or visibility change)
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") {
+        alert("Quiz ended due to tab switching.");
+        form.requestSubmit();
+      }
+    });
+  </script>
+</body>
+</html>
